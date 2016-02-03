@@ -21,7 +21,7 @@ func setupWebInterface(workToDo chan string,finishedWorkMap *map[string]bool) {
 			fmt.Fprintln(w, err)
 			return
 		}
-		if (*finishedWorkMap)finishedWorkMap[parsedQuery["id"][0]] {
+		if (*finishedWorkMap)[parsedQuery["id"][0]] {
 			fmt.Fprintln(w, "Finished.")
 		} else {
 			fmt.Fprintln(w, "In progress or not found.")
