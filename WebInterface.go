@@ -30,14 +30,18 @@ func setupWebInterface(workToDo chan string,finishedWorkMap *map[string]bool) {
 	http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
 		if(r.Method == "POST") {
 			newWorkId := uuid.NewV4().String()
+			fmt.Println("Started handling and creating file.")
 			file, err := os.Create("/tmp/" + newWorkId + ".png")
 			fmt.Println(file.Name())
 			defer file.Close()
 			if err != nil {
 				fmt.Fprintln(w,err)
 			}
+			fmt.Println("Started copying to file.")
 			io.Copy(file, r.Body)
+			fmt.Println("Finished copying to file.")
 			file.Close()
+			fmt.Println("Setting up work job.")
 			setupNewWorkJob(workToDo, newWorkId, finishedWorkMap)
 			fmt.Fprintln(w, "Thank you for your submission. Job number:" + newWorkId)
 		} else {
