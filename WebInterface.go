@@ -37,9 +37,8 @@ func setupWebInterface(workToDo chan string,finishedWorkMap *map[string]bool) {
 				fmt.Fprintln(w,err)
 			}
 			io.Copy(file, r.Body)
-			(*finishedWorkMap)[newWorkId] = false
 			file.Close()
-			workToDo <- newWorkId
+			setupNewWorkJob(workToDo, newWorkId, &finishedWorkMap)
 			fmt.Fprintln(w, "Thank you for your submission. Job number:" + newWorkId)
 		} else {
 			fmt.Fprintln(w,"ERROR: Only POST accepted.")
@@ -49,4 +48,9 @@ func setupWebInterface(workToDo chan string,finishedWorkMap *map[string]bool) {
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+func setupNewWorkJob(workToDo chan string, newWorkId string, finishedWorkMap *map[string]bool) {
+	(*finishedWorkMap)[newWorkId] = false
+	workToDo <- newWorkId
 }
