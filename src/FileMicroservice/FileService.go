@@ -1,0 +1,54 @@
+package FileMicroservice
+
+import (
+	"net/http"
+	"fmt"
+	"os"
+	"github.com/satori/go.uuid"
+	"io"
+	"net/url"
+)
+
+func RunService() {
+	workToDo := make(chan string)
+	finishedWorkMap := make(map[string]bool)
+	go startProcessor(workToDo, &finishedWorkMap)
+	http.HandleFunc("/isReady", func (w http.ResponseWriter, r *http.Request) {
+		parsedUrl, err := url.Parse(r.URL.String())
+		if err != nil {
+			fmt.Fprintln(w, err)
+			return
+		}
+		parsedQuery, err := url.ParseQuery(parsedUrl.RawQuery)
+		if err != nil {
+			fmt.Fprintln(w, err)
+			return
+		}
+		if finishedWorkMap[parsedQuery["id"][0]] {
+			fmt.Fprintln(w, "Finished.")
+		} else {
+			fmt.Fprintln(w, "In progress or not found.")
+		}
+	})
+	http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
+		if(r.Method == "POST") {
+			newWorkId := uuid.NewV4().String()
+			file, err := os.Create("C:/temp/" + newWorkId + ".png")
+			defer file.Close()
+			if err != nil {
+				fmt.Fprintln(w,err)
+			}
+			io.Copy(file, r.Body)
+			finishedWorkMap[newWorkId] = false
+			file.Close()
+			workToDo <- newWorkId
+			fmt.Fprintln(w, "Thank you for your submission. Job number:" + newWorkId)
+		} else {
+			fmt.Fprintln(w,"ERROR: Only POST accepted.")
+		}
+	})
+	err := http.ListenAndServe(":3000", nil)
+	if err != nil {
+		fmt.Println(err)
+	}
+}

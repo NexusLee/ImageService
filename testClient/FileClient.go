@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"os"
 	"fmt"
-	"io"
-	"github.com/satori/go.uuid"
 	"time"
 )
 
@@ -13,7 +11,7 @@ func main() {
 	for i := 0; i < 200; i++ {
 		go testing()
 	}
-	time.Sleep(time.Second * 30)
+	time.Sleep(time.Second * 15)
 }
 
 func testing() {
@@ -26,8 +24,6 @@ func testing() {
 		fmt.Println(err)
 	}
 	file.Close()
-	id := uuid.NewV4();
-	file, err = os.Create("C:/temp/" + id.String() + ".png")
-	io.Copy(file, response.Body)
-	file.Close()
+	fmt.Println(response.Body)
+
 }
