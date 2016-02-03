@@ -11,6 +11,7 @@ import (
 func startProcessor(workToDo chan string, finishedWorkMap *map[string]bool) {
 	var workId string
 	runningProcesses := 0
+	loopbackCount := 0
 	finishedWorkCommunicator := make(chan string)
 	for {
 		select {
@@ -19,12 +20,13 @@ func startProcessor(workToDo chan string, finishedWorkMap *map[string]bool) {
 			runningProcesses--
 			fmt.Println("Process finished:", runningProcesses)
 		case workId = <- workToDo:
-			if(runningProcesses < 10) {
+			if(runningProcesses < 20) {
 				runningProcesses++
 				fmt.Println("New process:", runningProcesses)
 				go processImage(workId, finishedWorkCommunicator)
 			} else {
-				fmt.Println("Process loopbacked.")
+				fmt.Println("Process loopbacked.", loopbackCount)
+				loopbackCount++
 				go workIdLoopback(workId, workToDo)
 			}
 		}
