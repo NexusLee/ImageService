@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-
 )
 
 func startProcessor(workToDo chan string, finishedWorkMap *map[string]bool) {
