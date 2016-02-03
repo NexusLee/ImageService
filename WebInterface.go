@@ -2,17 +2,14 @@ package FileMicroservice
 
 import (
 	"net/http"
-	"fmt"
-	"os"
-	"github.com/satori/go.uuid"
-	"io"
 	"net/url"
+	"fmt"
+	"github.com/satori/go.uuid"
+	"os"
+	"io"
 )
 
-func RunService() {
-	workToDo := make(chan string)
-	finishedWorkMap := make(map[string]bool)
-	go startProcessor(workToDo, &finishedWorkMap)
+func setupWebInterface(workToDo chan string,finishedWorkMap *map[string]bool) {
 	http.HandleFunc("/isReady", func (w http.ResponseWriter, r *http.Request) {
 		parsedUrl, err := url.Parse(r.URL.String())
 		if err != nil {
