@@ -20,7 +20,7 @@ func startProcessor(workToDo chan string, finishedWorkMap *map[string]bool) {
 			runningProcesses--
 			fmt.Println("Process finished:", runningProcesses)
 		case workId = <- workToDo:
-			if(runningProcesses < 20) {
+			if(runningProcesses < 10) {
 				runningProcesses++
 				fmt.Println("New process:", runningProcesses)
 				go processImage(workId, finishedWorkCommunicator)
