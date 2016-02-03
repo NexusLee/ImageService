@@ -1,8 +1,8 @@
 package ImageFileMicroservices
 
 func RunService() {
-	workToDo := make(chan string)
-	finishedWorkMap := make(map[string]bool, 1024)
+	workToDo := make(chan string, 1024)
+	finishedWorkMap := make(map[string]bool)
 	go startProcessor(workToDo, &finishedWorkMap)
 	setupWebInterface(workToDo, &finishedWorkMap)
 }
