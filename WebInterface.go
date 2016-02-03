@@ -30,7 +30,7 @@ func setupWebInterface(workToDo chan string,finishedWorkMap *map[string]bool) {
 	http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
 		if(r.Method == "POST") {
 			newWorkId := uuid.NewV4().String()
-			file, err := os.Create("/temp/" + newWorkId + ".png")
+			file, err := os.Create("/tmp/" + newWorkId + ".png")
 			fmt.Println(file.Name())
 			defer file.Close()
 			if err != nil {

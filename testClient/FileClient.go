@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	for i := 0; i < 200; i++ {
+	for i := 0; i < 1; i++ {
 		go testing()
 	}
 	time.Sleep(time.Second * 15)
@@ -16,7 +16,7 @@ func main() {
 }
 
 func testing() {
-	file, err := os.Open("C:/temp/image.png")
+	file, err := os.Open("/tmp/image.png")
 	if err != nil {
 		fmt.Println(err)
 	}
