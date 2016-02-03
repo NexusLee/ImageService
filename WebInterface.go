@@ -52,4 +52,5 @@ func setupWebInterface(workToDo chan string,finishedWorkMap *map[string]bool) {
 func setupNewWorkJob(workToDo chan string, newWorkId string, finishedWorkMap *map[string]bool) {
 	(*finishedWorkMap)[newWorkId] = false
 	workToDo <- newWorkId
+	fmt.Println("Dispatched new work! :)")
 }
