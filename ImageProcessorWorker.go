@@ -1,4 +1,4 @@
-package FileMicroservice
+package ImageFileMicroservices
 
 import (
 	"image/png"

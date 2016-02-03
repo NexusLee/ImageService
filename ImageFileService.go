@@ -1,4 +1,4 @@
-package FileMicroservice
+package ImageFileMicroservices
 
 func RunService() {
 	workToDo := make(chan string)
