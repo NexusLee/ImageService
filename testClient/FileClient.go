@@ -5,6 +5,7 @@ import (
 	"os"
 	"fmt"
 	"time"
+	"io"
 )
 
 func main() {
@@ -25,6 +26,6 @@ func testing() {
 		fmt.Println(err)
 	}
 	file.Close()
-	fmt.Println(response.Body)
+	io.Copy(os.Stdout,response.Body)
 
 }
