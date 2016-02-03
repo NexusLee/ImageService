@@ -31,7 +31,6 @@ func setupWebInterface(workToDo chan string,finishedWorkMap *map[string]bool) {
 		if(r.Method == "POST") {
 			newWorkId := uuid.NewV4().String()
 			file, err := os.Create("/tmp/" + newWorkId + ".png")
-			fmt.Println("Updated")
 			defer file.Close()
 			if err != nil {
 				fmt.Fprintln(w,err)
