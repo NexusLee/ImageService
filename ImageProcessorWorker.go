@@ -12,7 +12,7 @@ func startProcessor(workToDo chan string, finishedWorkMap *map[string]bool) {
 	var workId string
 	counter := 0
 	finishedWorkCommunicator := make(chan string)
-	for i := 0; i < 20; i++ {
+	for i := 0; i < 40; i++ {
 		go startImageProcessorWorker(workToDo, finishedWorkCommunicator)
 	}
 	for {
