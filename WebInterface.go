@@ -21,7 +21,7 @@ func setupWebInterface(workToDo chan string,finishedWorkMap *map[string]bool) {
 			fmt.Fprintln(w, err)
 			return
 		}
-		if finishedWorkMap[parsedQuery["id"][0]] {
+		if (*finishedWorkMap)finishedWorkMap[parsedQuery["id"][0]] {
 			fmt.Fprintln(w, "Finished.")
 		} else {
 			fmt.Fprintln(w, "In progress or not found.")
@@ -30,13 +30,13 @@ func setupWebInterface(workToDo chan string,finishedWorkMap *map[string]bool) {
 	http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
 		if(r.Method == "POST") {
 			newWorkId := uuid.NewV4().String()
-			file, err := os.Create("C:/temp/" + newWorkId + ".png")
+			file, err := os.Create("/temp/" + newWorkId + ".png")
 			defer file.Close()
 			if err != nil {
 				fmt.Fprintln(w,err)
 			}
 			io.Copy(file, r.Body)
-			finishedWorkMap[newWorkId] = false
+			(*finishedWorkMap)[newWorkId] = false
 			file.Close()
 			workToDo <- newWorkId
 			fmt.Fprintln(w, "Thank you for your submission. Job number:" + newWorkId)

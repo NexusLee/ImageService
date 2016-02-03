@@ -29,7 +29,7 @@ func processImage(workId string, finishedWorkCommunicator chan string) {
 }
 
 func modifyImage(workId string) bool {
-	file, err := os.Open("C:/temp/" + workId + ".png")
+	file, err := os.Open("/temp/" + workId + ".png")
 	defer file.Close()
 	if err != nil {
 		fmt.Println(err)
@@ -41,7 +41,7 @@ func modifyImage(workId string) bool {
 		return false
 	}
 	file.Close()
-	file, err = os.Create("C:/temp/" + workId + ".png")
+	file, err = os.Create("/temp/" + workId + ".png")
 	if err != nil {
 		fmt.Println(err)
 		return false
