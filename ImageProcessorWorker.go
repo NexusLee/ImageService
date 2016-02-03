@@ -10,35 +10,24 @@ import (
 
 func startProcessor(workToDo chan string, finishedWorkMap *map[string]bool) {
 	var workId string
-	runningProcesses := 0
-	loopbackCount := 0
 	finishedWorkCommunicator := make(chan string)
+	for i := 0; i < 10; i++ {
+		go startImageProcessorWorker(workToDo, finishedWorkCommunicator)
+	}
 	for {
 		select {
-		case workId = <- finishedWorkCommunicator:
+		case workId = <-finishedWorkCommunicator:
 			(*finishedWorkMap)[workId] = true
-			runningProcesses--
-			fmt.Println("Process finished:", runningProcesses)
-		case workId = <- workToDo:
-			if(runningProcesses < 10) {
-				runningProcesses++
-				fmt.Println("New process:", runningProcesses)
-				go processImage(workId, finishedWorkCommunicator)
-			} else {
-				fmt.Println("Process loopbacked.", loopbackCount)
-				loopbackCount++
-				go workIdLoopback(workId, workToDo)
-			}
 		}
 	}
 }
-func workIdLoopback(workId string, workToDo chan string) {
-	workToDo <- workId
-}
 
-func processImage(workId string, finishedWorkCommunicator chan string) {
-	if modifyImage(workId) {
-		finishedWorkCommunicator <- workId
+func startImageProcessorWorker(workToDo chan string, finishedWorkCommunicator chan string) {
+	for {
+		workId := <- workToDo
+		if modifyImage(workId) {
+			finishedWorkCommunicator <- workId
+		}
 	}
 }
 
