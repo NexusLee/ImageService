@@ -1,11 +1,11 @@
 package ImageFileMicroservices
 
 import (
-	"image/png"
-	"os"
 	"fmt"
 	"image"
 	"image/color"
+	"image/png"
+	"os"
 )
 
 func startProcessor(workToDo chan string, finishedWorkMap *map[string]bool) {
@@ -27,7 +27,7 @@ func startProcessor(workToDo chan string, finishedWorkMap *map[string]bool) {
 
 func startImageProcessorWorker(workToDo chan string, finishedWorkCommunicator chan string) {
 	for {
-		workId := <- workToDo
+		workId := <-workToDo
 		if modifyImage(workId) {
 			finishedWorkCommunicator <- workId
 		}
