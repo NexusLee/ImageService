@@ -1,4 +1,4 @@
-package ImageFileMicroservices
+package ImageService
 
 import "sync"
 
