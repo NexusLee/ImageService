@@ -21,7 +21,7 @@ func testing() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	response, err := http.Post("http://192.168.1.14:3000/", "file/image", file)
+	response, err := http.Post("http://localhost:3000/", "file/image", file)
 	if err != nil {
 		fmt.Println(err)
 	}

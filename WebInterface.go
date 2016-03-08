@@ -21,7 +21,10 @@ func setupWebInterface(workToDo chan string, finishedWorkMap *map[string]bool) {
 			fmt.Fprintln(w, err)
 			return
 		}
-		if (*finishedWorkMap)[parsedQuery["id"][0]] {
+		globalFinishedWorkMapMutex.Lock()
+		isFinished := (*finishedWorkMap)[parsedQuery["id"][0]]
+		globalFinishedWorkMapMutex.Unlock()
+		if isFinished {
 			file, err := os.Open("/tmp/" + parsedQuery["id"][0] + ".png")
 			if err != nil {
 				w.Header().Set("Content-Type", "image/png")
@@ -57,7 +60,9 @@ func setupWebInterface(workToDo chan string, finishedWorkMap *map[string]bool) {
 }
 
 func setupNewWorkJob(workToDo chan string, newWorkId string, finishedWorkMap *map[string]bool) {
+	globalFinishedWorkMapMutex.Lock()
 	(*finishedWorkMap)[newWorkId] = false
+	globalFinishedWorkMapMutex.Unlock()
 	fmt.Println("Starting dispatch...")
 	workToDo <- newWorkId
 	fmt.Println("Dispatched new work! :)")

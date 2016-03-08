@@ -18,7 +18,9 @@ func startProcessor(workToDo chan string, finishedWorkMap *map[string]bool) {
 	for {
 		select {
 		case workId = <-finishedWorkCommunicator:
+			globalFinishedWorkMapMutex.Lock()
 			(*finishedWorkMap)[workId] = true
+			globalFinishedWorkMapMutex.Unlock()
 			counter++
 			fmt.Println("Finished:", counter)
 		}
