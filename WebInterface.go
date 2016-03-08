@@ -28,6 +28,7 @@ func setupWebInterface(workToDo chan string, finishedWorkMap *map[string]bool) {
 			file, err := os.Open("/tmp/" + parsedQuery["id"][0] + ".png")
 			if err != nil {
 				w.Header().Set("Content-Type", "image/png")
+				fmt.Println("Serving ", parsedQuery["id"][0])
 				io.Copy(w, file)
 			} else {
 				fmt.Fprintln(w, err)
