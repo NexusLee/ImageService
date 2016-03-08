@@ -10,7 +10,7 @@ import (
 )
 
 func setupWebInterface(workToDo chan string, finishedWorkMap *map[string]bool) {
-	http.HandleFunc("/isReady", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/get", func(w http.ResponseWriter, r *http.Request) {
 		parsedUrl, err := url.Parse(r.URL.String())
 		if err != nil {
 			fmt.Fprintln(w, err)
@@ -22,7 +22,14 @@ func setupWebInterface(workToDo chan string, finishedWorkMap *map[string]bool) {
 			return
 		}
 		if (*finishedWorkMap)[parsedQuery["id"][0]] {
-			fmt.Fprintln(w, "Finished.")
+			file, err := os.Open("/tmp/" + parsedQuery["id"][0] + ".png")
+			if err != nil {
+				w.Header().Set("Content-Type", "image/png")
+				io.Copy(w, file)
+			} else {
+				fmt.Fprintln(w, err)
+			}
+
 		} else {
 			fmt.Fprintln(w, "In progress or not found.")
 		}
