@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	for i := 0; i < 200; i++ {
+	for i := 0; i < 1000; i++ {
 		go testing()
 	}
 	time.Sleep(time.Second * 15)
